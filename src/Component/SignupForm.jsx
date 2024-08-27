@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import FileDropDown from "./FileDropDown";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import toast from "react-hot-toast";
 
 const SignupForm = () => {
 	const [file, setFile] = useState(null);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [formData, setFormData] = useState({
 		firstName: "",
 		lastName: "",
@@ -16,7 +18,6 @@ const SignupForm = () => {
 		email: "",
 		password: "",
 		confirmPassword: "",
-		resume: null,
 	});
 
 	const handleChange = (e) => {
@@ -27,11 +28,57 @@ const SignupForm = () => {
 		}));
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		formData.resume = file;
-		console.log(formData);
-		// Add your form submission logic here
+		const data = new FormData();
+
+		data.append("name", `${formData.firstName} ${formData.lastName}`);
+		data.append("phoneNumber", formData.phone);
+		data.append("address", formData.address);
+		data.append("dob", formData.dateOfBirth);
+		data.append("bio", formData.bio);
+		data.append("email", formData.email);
+		data.append("password", formData.password);
+		data.append("confirmPassword", formData.confirmPassword);
+		data.append("resume", file);
+
+		const toastId = toast.loading("Loading");
+		setLoading(true);
+		try {
+			const response = await fetch(
+				process.env.REACT_APP_BASE_URL + "signup",
+				{
+					method: "POST",
+					body: data,
+				}
+			);
+
+			if (!response.ok) {
+				const errorMessage = `${response.status} - ${response.statusText}`;
+				throw new Error(errorMessage);
+			}
+
+			const output = await response.json();
+			toast.success(output.message);
+		} catch (error) {
+			console.log(error);
+			toast.error(error.message);
+		}
+
+		toast.dismiss(toastId);
+		setLoading(false);
+		setFormData({
+			firstName: "",
+			lastName: "",
+			phone: "",
+			address: "",
+			dateOfBirth: "",
+			bio: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
+		});
+		setFile(null);
 	};
 
 	return (
@@ -271,6 +318,7 @@ const SignupForm = () => {
 
 					<div>
 						<button
+							disabled={loading}
 							type="submit"
 							className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm sm:text-base font-medium rounded-md text-gray-900 bg-gray-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
 						>
@@ -289,7 +337,7 @@ const SignupForm = () => {
 									/>
 								</svg>
 							</span>
-							Sign up
+							{loading ? "Loading..." : "Sign up"}
 						</button>
 					</div>
 				</form>

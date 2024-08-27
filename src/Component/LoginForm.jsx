@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
 	const [formData, setFormData] = useState({
@@ -8,6 +9,7 @@ const LoginForm = () => {
 	});
 
 	const [showPassword, setShowPassword] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -17,10 +19,35 @@ const LoginForm = () => {
 		}));
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log("Login attempt with:", formData);
-		// Add your login logic here
+		const toastId = toast.loading("Loading");
+		setLoading(true);
+		try {
+			const response = await fetch(
+				process.env.REACT_APP_BASE_URL + "login",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(formData),
+				}
+			);
+
+			if (!response.ok) {
+				const errorMessage = `${response.status} - ${response.statusText}`;
+				throw new Error(errorMessage);
+			}
+			const data = await response.json();
+			console.log(data);
+			toast.success(data.message);
+		} catch (error) {
+			console.error("Error:", error);
+			toast.error(error.message);
+		}
+		toast.dismiss(toastId);
+		setLoading(false);
 	};
 
 	return (
@@ -94,6 +121,7 @@ const LoginForm = () => {
 
 					<div>
 						<button
+							disabled={loading}
 							type="submit"
 							className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm sm:text-base font-medium rounded-md text-gray-900 bg-gray-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
 						>
@@ -112,7 +140,7 @@ const LoginForm = () => {
 									/>
 								</svg>
 							</span>
-							Log in
+							{loading ? "Loading..." : "Login"}
 						</button>
 					</div>
 				</form>
