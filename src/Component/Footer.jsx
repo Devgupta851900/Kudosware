@@ -13,7 +13,7 @@ const Footer = ({ homeRef, contactRef, aboutRef, formRef, token }) => {
 			<div className="max-w-7xl border-t border-gray-700 mx-auto">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 my-8">
 					<div>
-						<h3 className="text-2xl font-bold mb-4">HelloWorld</h3>
+						<h3 className="text-2xl font-bold mb-4">Kudosware</h3>
 						<p className="text-gray-600 font-semibold ">
 							Empowering your digital journey with cutting-edge
 							solutions and unparalleled expertise.
@@ -134,7 +134,7 @@ const Footer = ({ homeRef, contactRef, aboutRef, formRef, token }) => {
 				<div className="border-t border-gray-700 pt-8">
 					<div className="flex flex-col md:flex-row justify-between items-center">
 						<p className="text-gray-600 font-semibold text-sm mb-4 md:mb-0">
-							© 2024 Helloworld. All rights reserved.
+							© 2024 Kudosware. All rights reserved.
 						</p>
 						<div className="flex space-x-4">
 							<div

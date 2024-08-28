@@ -51,7 +51,7 @@ const Navbar = ({
 				<div className="flex items-center justify-between py-4">
 					<Link to={"/"}>
 						<div className="text-3xl font-bold bg-gradient-to-r from-gray-700 to-gray-800 text-transparent bg-clip-text">
-							HelloWorld
+							Kudosware
 						</div>
 					</Link>
 
@@ -188,7 +188,7 @@ const Navbar = ({
 						<div className="flex justify-between items-center mb-8">
 							<Link to={"/"}>
 								<div className="text-2xl font-bold bg-gradient-to-r from-gray-700 to-gray-800 text-transparent bg-clip-text">
-									HelloWorld
+									Kudosware
 								</div>
 							</Link>
 							<button
