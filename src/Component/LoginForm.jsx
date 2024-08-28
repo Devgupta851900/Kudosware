@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+const LoginForm = ({ setToken, setUser }) => {
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -10,6 +11,8 @@ const LoginForm = () => {
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
+
+	const navigate = useNavigate();
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -25,7 +28,7 @@ const LoginForm = () => {
 		setLoading(true);
 		try {
 			const response = await fetch(
-				process.env.REACT_APP_BASE_URL + "login",
+				`${process.env.REACT_APP_BASE_URL}/login`,
 				{
 					method: "POST",
 					headers: {
@@ -35,19 +38,25 @@ const LoginForm = () => {
 				}
 			);
 
+			console.log(response);
 			if (!response.ok) {
-				const errorMessage = `${response.status} - ${response.statusText}`;
-				throw new Error(errorMessage);
+				throw new Error(response.statusText);
 			}
 			const data = await response.json();
-			console.log(data);
+
 			toast.success(data.message);
+			localStorage.setItem("token", JSON.stringify(data.token));
+			localStorage.setItem("user", JSON.stringify(data.user));
+			setToken(data.token);
+			setUser(data.user);
 		} catch (error) {
 			console.error("Error:", error);
 			toast.error(error.message);
+		} finally {
+			toast.dismiss(toastId);
+			setLoading(false);
+			navigate("/profile");
 		}
-		toast.dismiss(toastId);
-		setLoading(false);
 	};
 
 	return (

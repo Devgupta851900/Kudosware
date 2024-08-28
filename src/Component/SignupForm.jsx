@@ -3,7 +3,7 @@ import FileDropDown from "./FileDropDown";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import toast from "react-hot-toast";
 
-const SignupForm = () => {
+const SignupForm = ({ setAuth }) => {
 	const [file, setFile] = useState(null);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -46,7 +46,7 @@ const SignupForm = () => {
 		setLoading(true);
 		try {
 			const response = await fetch(
-				process.env.REACT_APP_BASE_URL + "signup",
+				`${process.env.REACT_APP_BASE_URL}/signup`,
 				{
 					method: "POST",
 					body: data,
@@ -54,8 +54,7 @@ const SignupForm = () => {
 			);
 
 			if (!response.ok) {
-				const errorMessage = `${response.status} - ${response.statusText}`;
-				throw new Error(errorMessage);
+				throw new Error(response.statusText);
 			}
 
 			const output = await response.json();
@@ -79,6 +78,8 @@ const SignupForm = () => {
 			confirmPassword: "",
 		});
 		setFile(null);
+		setAuth("login");
+		window.scrollTo(0, 0);
 	};
 
 	return (

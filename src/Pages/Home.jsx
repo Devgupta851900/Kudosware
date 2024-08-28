@@ -3,11 +3,14 @@ import { FiPocket, FiArrowRight } from "react-icons/fi";
 import homeImage from "../assets/home.jpg";
 import { Link } from "react-router-dom";
 
-const Home = () => {
+const Home = ({ homeRef, aboutRef }) => {
 	return (
 		<div className="min-h-screen">
 			{/* Hero Section */}
-			<section className="pt-24 md:pt-32 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+			<section
+				ref={homeRef}
+				className="pt-24 md:pt-32 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto"
+			>
 				<div className="text-center">
 					<h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
 						Welcome to{" "}
@@ -40,7 +43,11 @@ const Home = () => {
 			</section>
 
 			{/* Features Section */}
-			<section className="py-20 md:py-32 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+
+			<section
+				ref={aboutRef}
+				className="py-20 md:py-32 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto"
+			>
 				<h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
 					Why Choose HelloWorld?
 				</h2>

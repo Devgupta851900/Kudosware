@@ -3,14 +3,21 @@ import SignupForm from "../Component/SignupForm";
 import LoginForm from "../Component/LoginForm";
 import ToogleBar from "../Component/ToogleBar";
 
-const Auth = () => {
-	const [auth, setAuth] = useState("login");
+const Auth = ({  formRef, setToken, setUser }) => {
+	const [auth, setAuth] = useState("");
 
 	return (
-		<div className=" pt-24 ">
+		<div ref={formRef} className=" pt-24 ">
 			<ToogleBar auth={auth} setAuth={setAuth} />
-
-			{auth === "login" ? <LoginForm /> : <SignupForm />}
+			{auth === "login" ? (
+				<LoginForm
+					setToken={setToken}
+					setUser={setUser}
+					setAuth={setAuth}
+				/>
+			) : (
+				<SignupForm setAuth={setAuth} />
+			)}
 		</div>
 	);
 };
